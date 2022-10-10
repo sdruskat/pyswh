@@ -1,7 +1,5 @@
-from builtins import object
 from enum import Enum
 import logging
-import json
 import time
 
 import requests
@@ -152,11 +150,17 @@ def save(origin_url: str, post_only: bool, auth_token: str):
             task_id = init_response.json()['loading_task_id']
             _check_status(init_response, auth_token, task_id)
         elif status == 400:
-            raise SwhSaveError(f'An invalid visit type or origin url has been provided.\nURL: {origin_url}\n{init_response.content}')
+            raise SwhSaveError(f'An invalid visit type or origin url has been provided.\n'
+                               f'URL: {origin_url}\n'
+                               f'{init_response.content}')
         elif status == 403:
-            raise SwhSaveError(f'The provided origin url is blacklisted\nURL: {origin_url}\n{init_response.content}')
+            raise SwhSaveError(f'The provided origin url is blacklisted.'
+                               f'\nURL: {origin_url}'
+                               f'\n{init_response.content}')
         elif status == 404:
-            raise SwhSaveError(f'No save requests have been found for a given origin\nURL: {origin_url}\n{init_response.content}')
+            raise SwhSaveError(f'No save requests have been found for a given origin.'
+                               f'\nURL: {origin_url}'
+                               f'\n{init_response.content}')
         elif status == 429:  # Too many requests
             _back_off(init_response)
             save(origin_url, False, auth_token)
@@ -164,4 +168,3 @@ def save(origin_url: str, post_only: bool, auth_token: str):
             raise SwhSaveError(f'The status of the API response is unknown. '
                                f'Please open a new issue reporting this at TODO. '
                                f'Status code: {status}')
-
