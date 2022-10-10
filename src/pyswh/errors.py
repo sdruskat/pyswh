@@ -1,0 +1,2 @@
+class SwhSaveError(Exception):
+    pass
