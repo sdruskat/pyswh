@@ -12,8 +12,6 @@ API_ENDPOINT_SAVE = 'origin/save/'
 API_URL_PATH = '/url/'
 visit_type = 'git'  # TODO Add bzr, hg, svn
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
 
@@ -111,7 +109,7 @@ def _check_status(response: requests.Response, auth_token: str, task_id: str):
                  f'Waiting for 1 sec. before checking the status again.')
         time.sleep(1)
         retry_response = _request(RequestMethod.GET, origin_url, auth_token)
-        _check_status(retry_response, auth_token)
+        _check_status(retry_response, auth_token, task_id)
     elif request_status == 'rejected':
         raise SwhSaveError(f'The request to save {origin_url} has been rejected:\n'
                            f'Notes: {response_json["note"]}\nFull response: {response.content}')
