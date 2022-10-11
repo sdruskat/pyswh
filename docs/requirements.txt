@@ -1,0 +1,5 @@
+Sphinx==5.2.3
+sphinx-autoapi==2.0.0
+
+# Theme
+sphinx-rtd-theme==1.0.0
