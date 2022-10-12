@@ -61,6 +61,14 @@ jobs:
           curl -sSL https://install.python-poetry.org | python -
       - name: Run tox
         run: tox -e py
+      - name: Show workspace
+        run: |
+          pwd
+          ls -Rlisah
+      - name: Override Coverage Source Path for Sonar
+        run: |
+          cat /home/runner/work/pyswh/pyswh/coverage.xml
+          sed -i "s|<source>\/home\/runner\/work\/pyswh/pyswh<\/source>|<source>\/github\/workspace<\/source>|g" /home/runner/work/pyswh/pyswh/coverage.xml
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
