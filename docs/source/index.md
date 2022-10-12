@@ -13,6 +13,11 @@
 save
 ```
 
+```{toctree}
+:hidden:
+:caption: API Reference
+autoapi/pyswh/index
+```
 
 ```{toctree}
 :hidden:

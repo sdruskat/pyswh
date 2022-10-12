@@ -32,6 +32,7 @@ autoapi_options = [
     'imported-members',
     # 'show-inheritance-diagram'
 ]
+autoapi_add_toctree_entry = False
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
