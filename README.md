@@ -41,7 +41,7 @@ except swh_errors.SwhSaveError as sse:
     raise sse
 ```
 
-Refer to the [complete documentation](https://pyswh.readthedocs.io/en/stable/) to learn more about using `pyswh`.
+Refer to the [complete documentation](https://pyswh.readthedocs.io/en/latest/) to learn more about using `pyswh`.
 
 ## Set up for development
 
