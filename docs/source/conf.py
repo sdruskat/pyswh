@@ -14,6 +14,7 @@ author = 'Stephan Druskat'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    'sphinx.ext.intersphinx',
     'autoapi.extension',
     'myst_parser'
 ]
@@ -33,6 +34,11 @@ autoapi_options = [
     # 'show-inheritance-diagram'
 ]
 autoapi_add_toctree_entry = False
+
+# Intersphinx config
+intersphinx_mapping = {
+    'requests': ('https://requests.readthedocs.io/en/latest/', None),
+}
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
