@@ -62,7 +62,9 @@ jobs:
       - name: Run tox
         run: tox -e py
       - name: Show workspace
-        run: ls -Rlisah
+        run: |
+          pwd
+          ls -Rlisah
       - name: Override Coverage Source Path for Sonar
         run: sed -i "s/<source>\/home\/runner\/work\/repo<\/source>/<source>\/github\/workspace<\/source>/g" /home/runner/work/coverage.xml
       - name: SonarCloud Scan
