@@ -8,6 +8,8 @@ SPDX-License-Identifier: CC-BY-4.0
 
 *pyswh* aims to wrap interactions with the [Software Heritage REST API](https://archive.softwareheritage.org/api/1/) into a comfortable Python API.
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sdruskat_pyswh&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=sdruskat_pyswh)
+
 ## Getting started
 
 Install `pyswh` via pip:
