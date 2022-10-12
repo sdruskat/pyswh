@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022 Stephan Druskat <pyswh@sdruskat.net>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 # *pyswh* - a Python wrapper library for the Software Heritage API
 
 *pyswh* aims to wrap interactions with the [Software Heritage REST API](https://archive.softwareheritage.org/api/1/) into a comfortable Python API.
@@ -66,13 +72,14 @@ poetry install
 `pyswh` uses `pytest` for testing. To run all tests, do:
 
 ```bash
+poetry shell
 poetry run pytest test/
 ```
 
 ## Building documentation locally
 
-Go into the `docs/` folder and run `make html`.
+Initialize the Poetry virtual environment with `poetry shell`, go into the `docs/` folder and run `make html`.
 
 ## Licensing
 
-TBA
+Code is licensed under [MIT](https://spdx.org/licenses/MIT.html), documentation is licensed under [CC-BY-4.0](https://spdx.org/licenses/CC-BY-4.0.html), all other files are licensed under [CC0-1.0](https://spdx.org/licenses/CC0-1.0.html).
