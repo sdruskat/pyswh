@@ -28,13 +28,6 @@ class _RequestMethod(Enum):
     GET = 'GET'
 
 
-def _build_request_url(origin_url):
-    """
-    Constructs a valid request URL to use with the Software Heritage API from its parts.
-    """
-    return _prepare_url(_API_ROOT_URL + _API_ENDPOINT_SAVE + _visit_type + _API_URL_PATH + origin_url)
-
-
 def _check_rate_limit():
     """
     Pings the SWH API to receive a response with rate limit information in the header,
@@ -64,7 +57,7 @@ def _request(method: _RequestMethod, origin_url: str, auth_token: str) -> reques
     :rtype: requests.Response
     """
     _check_rate_limit()
-    request_url = _build_request_url(origin_url)
+    request_url = _prepare_url(origin_url)
     headers = {'Accept': 'application/json'}
     if auth_token:
         _log.debug('Making authenticated requests (authorization token).')
