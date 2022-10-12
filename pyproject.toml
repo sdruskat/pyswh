@@ -5,7 +5,7 @@
 [tool.poetry]
 name = "pyswh"
 version = "0.1.0"
-description = ""
+description = "A Python wrapper for the Software Heritage API"
 authors = ["Stephan Druskat <stephan.druskat@dlr.de>"]
 readme = "README.md"
 
