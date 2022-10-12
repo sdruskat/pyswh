@@ -82,6 +82,4 @@ Initialize the Poetry virtual environment with `poetry shell`, go into the `docs
 
 ## Licensing
 
-Code is licensed under [MIT](https://spdx.org/licenses/MIT.html), documentation is licensed under [CC-BY-4.0](https://spdx.org/licenses/CC-BY-4.0.html), all other files are licensed under [CC0-1.0](https://spdx.org/licenses/CC0-1.0.html).
-
-This project follows the [REUSE Specification](https://reuse.software/).
+See [`LICENSE.md`](LICENSE.md)
