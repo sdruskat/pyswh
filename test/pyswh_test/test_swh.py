@@ -5,7 +5,7 @@
 import pytest
 
 from pyswh import swh
-from pyswh.errors import SwhSaveError
+# from pyswh.errors import SwhSaveError
 
 
 @pytest.mark.parametrize('test_input, expected', [
