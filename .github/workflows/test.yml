@@ -57,7 +57,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install tox and any other packages
-        run: pip install tox
+        run: |
+          pip install tox
+          curl -sSL https://install.python-poetry.org | python -
       - name: Run tox
         run: tox -e py
       - name: SonarCloud Scan
