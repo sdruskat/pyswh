@@ -16,6 +16,7 @@ Sphinx = "5.2.3"
 sphinx-rtd-theme = "^1.0.0"
 sphinx-autoapi = "^2.0.0"
 myst-parser = "^0.18.1"
+reuse = "^1.0.0"
 
 [build-system]
 requires = ["poetry-core"]
