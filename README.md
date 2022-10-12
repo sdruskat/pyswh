@@ -1,6 +1,6 @@
 # *pyswh* - a Python wrapper library for the Software Heritage API
 
-*pyswh* aims to wrap interactions with the [Software Heritage]() REST API into a comfortable Python API.
+*pyswh* aims to wrap interactions with the [Software Heritage REST API](https://archive.softwareheritage.org/api/1/) into a comfortable Python API.
 
 ## Getting started
 
@@ -12,7 +12,7 @@ pip install pyswh
 
 Include `pyswh` in your project by adding a respective dependency to your project, e.g.,
 
-```requirements.txt
+```bash
 # requirements.txt
 pyswh==0.1.0
 ```
@@ -35,7 +35,7 @@ except swh_errors.SwhSaveError as sse:
     raise sse
 ```
 
-Refer to the [complete documentation]() to learn more about using `pyswh`.
+Refer to the [complete documentation](https://pyswh.readthedocs.io/en/stable/) to learn more about using `pyswh`.
 
 ## Set up for development
 
