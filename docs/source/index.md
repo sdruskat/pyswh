@@ -13,11 +13,13 @@ SPDX-License-Identifier: CC-BY-4.0
 ```{include} ../../README.md
 ```
 
+<!--
 ```{toctree}
 :hidden:
 :caption: Usage
 save
 ```
+-->
 
 ```{toctree}
 :hidden:
