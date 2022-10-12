@@ -14,7 +14,8 @@ author = 'Stephan Druskat'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'autoapi.extension'
+    'autoapi.extension',
+    'myst_parser'
 ]
 
 templates_path = ['_templates']
