@@ -165,7 +165,7 @@ def _check_status(response: requests.Response, auth_token: str, task_id: str):
     if request_status == 'pending':
         # Wait
         _log.info(f'The request to save {origin_url} is still pending. '
-                 f'Waiting for 1 sec. before checking the status again.')
+                  f'Waiting for 1 sec. before checking the status again.')
         time.sleep(1)
         retry_response = _request(_RequestMethod.GET, origin_url, auth_token)
         _check_status(retry_response, auth_token, task_id)
