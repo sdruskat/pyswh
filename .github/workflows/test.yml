@@ -41,36 +41,3 @@ jobs:
         run: |
           pip install -e .
           poetry run pytest ./test/
-  sonarcloud:
-    name: SonarCloud
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.10"]  # Ignore Python < 3.10, they are unsupported
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install tox and any other packages
-        run: |
-          pip install tox
-          curl -sSL https://install.python-poetry.org | python -
-      - name: Run tox
-        run: tox -e py
-      - name: Show workspace
-        run: |
-          pwd
-          ls -Rlisah
-      - name: Override Coverage Source Path for Sonar
-        run: |
-          cat /home/runner/work/pyswh/pyswh/coverage.xml
-          sed -i "s|<source>\/home\/runner\/work\/pyswh/pyswh<\/source>|<source>\/github\/workspace<\/source>|g" /home/runner/work/pyswh/pyswh/coverage.xml
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
