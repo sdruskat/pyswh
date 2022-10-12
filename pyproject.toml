@@ -23,6 +23,7 @@ myst-parser = "^0.18.1"
 reuse = "^1.0.0"
 pytest-cov = "^4.0.0"
 tox = "^3.26.0"
+responses = "^0.22.0"
 
 [build-system]
 requires = ["poetry-core"]
