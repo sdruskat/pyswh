@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2022 Stephan Druskat <pyswh@sdruskat.net>
+#
+# SPDX-License-Identifier: MIT
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:

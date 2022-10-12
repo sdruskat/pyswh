@@ -1,0 +1,10 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: pyswh
+Upstream-Contact: Stephan Druskat <pyswh@sdruskat.net>
+Source: https://github.com/sdruskat/pyswh
+
+# Sample paragraph, commented out:
+#
+# Files: src/*
+# Copyright: $YEAR $NAME <$CONTACT>
+# License: ...

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022 Stephan Druskat <pyswh@sdruskat.net>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 ## Indices and tables
 
 * [](genindex)
