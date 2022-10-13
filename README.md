@@ -11,6 +11,7 @@ SPDX-License-Identifier: CC-BY-4.0
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sdruskat_pyswh&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=sdruskat_pyswh)
 [![Docs build](https://readthedocs.org/projects/pyswh/badge/?version=latest)](https://pyswh.readthedocs.io/en/latest/?badge=latest)
 [![codecov](https://codecov.io/gh/sdruskat/pyswh/branch/develop/graph/badge.svg?token=8IDQ3BXC4M)](https://codecov.io/gh/sdruskat/pyswh)
+[![REUSE status](https://api.reuse.software/badge/github.com/sdruskat/pyswh)](https://api.reuse.software/info/github.com/sdruskat/pyswh)
 
 ## Getting started
 
