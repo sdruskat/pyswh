@@ -44,7 +44,9 @@ jobs:
           curl -sSL https://install.python-poetry.org | python -
           poetry install --with dev
       - name: Run tox
-        run: poetry run tox -e py
+        run: |
+          poetry run tox -e py
+          sed -i "s/<source>\/home\/runner\/work\/pyswh\/pyswh<\/source>/<source>\/github\/workspace<\/source>/g" /home/runner/work/pyswh/pyswh/coverage.xml
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
