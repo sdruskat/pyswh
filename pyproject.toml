@@ -8,6 +8,30 @@ version = "0.1.0"
 description = "A Python wrapper for the Software Heritage API"
 authors = ["Stephan Druskat <stephan.druskat@dlr.de>"]
 readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/sdruskat/pyswh"
+repository = "https://github.com/sdruskat/pyswh"
+documentation = "https://pyswh.readthedocs.io"
+keywords = ["Software Heritage", "archive", "API"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Database",
+    "Topic :: System :: Archiving",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Topic :: System :: Software Distribution"
+]
+include = [
+    "CITATION.cff",
+    "LICENSES/*"
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
