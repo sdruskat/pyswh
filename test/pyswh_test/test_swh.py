@@ -11,6 +11,9 @@ from pyswh import swh
 # from pyswh.errors import SwhSaveError
 
 
+MOCK_SAVE_URL = 'https://archive.softwareheritage.org/api/1/origin/save/git/url/MOCK/'
+
+
 @pytest.mark.parametrize('test_input, expected', [
     ('abc', 'abc/'),
     ('abc/', 'abc/'),
@@ -26,11 +29,11 @@ def test_back_off():
 
     current_epoch = int(time.time())
     responses.add(responses.GET, 'https://my.api/api/1/foobar',
-                  headers={'X-RateLimit-Reset': str(current_epoch + 2)},  # Rate limit will be "reset" in 2 secs.
+                  headers={'X-RateLimit-Reset': str(current_epoch)},  # Rate limit will be "reset" in 2 secs.
                   status=200)
     response = requests.get('https://my.api/api/1/foobar')
     swh._back_off(response)
-    assert int(time.time() - current_epoch) == 4  # 2 secs. added in MOT
+    assert int(time.time() - current_epoch) == 2  # 2 secs. added in MOT
 
 
 @responses.activate
@@ -45,9 +48,9 @@ def test_check_rate_limit_pass(caplog):
 def test_check_rate_limit_429(caplog):
     current_epoch = int(time.time())
     responses.add(responses.GET, 'https://archive.softwareheritage.org/api/1/ping/', status=429,
-                  headers={'X-RateLimit-Reset': str(current_epoch + 2)})
+                  headers={'X-RateLimit-Reset': str(current_epoch)})
     swh._check_rate_limit()
-    assert int(time.time() - current_epoch) == 4  # 2 secs. added in MOT
+    assert int(time.time() - current_epoch) == 2  # 2 secs. added in MOT
 
 
 @responses.activate
@@ -55,6 +58,25 @@ def test_check_rate_limit_rate_limit(caplog):
     current_epoch = int(time.time())
     responses.add(responses.GET, 'https://archive.softwareheritage.org/api/1/ping/',
                   headers={'X-RateLimit-Remaining': str(0),
-                           'X-RateLimit-Reset': str(current_epoch + 2)})
+                           'X-RateLimit-Reset': str(current_epoch)})
     swh._check_rate_limit()
-    assert int(time.time() - current_epoch) == 4  # 2 secs. added in MOT
+    assert int(time.time() - current_epoch) == 2  # 2 secs. added in MOT
+
+
+def test_build_request_url():
+    assert swh._build_request_url('MOCK') == MOCK_SAVE_URL
+
+
+@responses.activate
+def test_request():
+    responses.add(responses.GET, 'https://archive.softwareheritage.org/api/1/ping/',
+                  headers={'X-RateLimit-Remaining': str(1)})
+    responses.add(responses.GET, MOCK_SAVE_URL,
+                  body='{"method": "GET"}', status=200,
+                  content_type='application/json')
+    responses.add(responses.POST, MOCK_SAVE_URL,
+                  body='{"method": "POST"}', status=200,
+                  content_type='application/json')
+
+    assert swh._request(swh._RequestMethod.POST, 'MOCK', None).content == b'{"method": "POST"}'
+    assert swh._request(swh._RequestMethod.GET, 'MOCK', None).content == b'{"method": "GET"}'
