@@ -5,13 +5,13 @@ on:
     branches:
       - develop
       - main
-    pull_request:
-      types: [ opened, synchronize, reopened ]
+  pull_request:
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Codecov
+    name: Codecovg
     steps:
       - uses: actions/checkout@v1
         with:
