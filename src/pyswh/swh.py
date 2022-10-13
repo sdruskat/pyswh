@@ -54,6 +54,7 @@ def _check_rate_limit():
     if int(response.headers['X-RateLimit-Remaining']) > 0:
         return
     else:
+        _log.info('Rate limit exceeded. Backing off.')
         _back_off(response)
 
 

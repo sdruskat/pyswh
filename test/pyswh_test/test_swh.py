@@ -80,3 +80,19 @@ def test_request():
 
     assert swh._request(swh._RequestMethod.POST, 'MOCK', None).content == b'{"method": "POST"}'
     assert swh._request(swh._RequestMethod.GET, 'MOCK', None).content == b'{"method": "GET"}'
+
+
+@responses.activate
+def test_init_save_pass():
+    responses.add(responses.GET, 'https://archive.softwareheritage.org/api/1/ping/',
+                  headers={'X-RateLimit-Remaining': str(1)})
+    responses.add(responses.POST, MOCK_SAVE_URL,
+                  body='{"method": "POST"}', status=200,
+                  content_type='application/json')
+    assert swh._init_save('MOCK', None).content ==  b'{"method": "POST"}'
+
+@responses.activate
+def test_init_save_raise():
+    with pytest.raises(swh.SwhSaveError) as e:
+        swh._init_save('MOCK', None)
+        assert 'Could not connect to the Software Heritage API. Are you connected to the internet?' in str(e.value)
