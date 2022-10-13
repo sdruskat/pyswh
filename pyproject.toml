@@ -6,7 +6,7 @@
 name = "pyswh"
 version = "0.1.0"
 description = "A Python wrapper for the Software Heritage API"
-authors = ["Stephan Druskat <stephan.druskat@dlr.de>"]
+authors = ["Stephan Druskat <pyswh@sdruskat.net>"]
 readme = "README.md"
 license = "MIT"
 homepage = "https://github.com/sdruskat/pyswh"
@@ -30,7 +30,8 @@ classifiers = [
 ]
 include = [
     "CITATION.cff",
-    "LICENSES/*"
+    "LICENSES/*",
+    "CHANGELOG.md"
 ]
 
 [tool.poetry.dependencies]
