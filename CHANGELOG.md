@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022 Stephan Druskat <pyswh@sdruskat.net>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
