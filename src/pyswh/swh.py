@@ -249,5 +249,5 @@ def save(origin_url: str, post_only: bool, auth_token: str):
             save(origin_url, False, auth_token)
         else:
             raise SwhSaveError(f'The status of the API response is unknown. '
-                               f'Please open a new issue reporting this at TODO. '
+                               f'Please open a new issue reporting this at https://github.com/sdruskat/pyswh/issues. '
                                f'Status code: {status}')
