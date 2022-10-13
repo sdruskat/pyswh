@@ -28,6 +28,17 @@ class _RequestMethod(Enum):
     GET = 'GET'
 
 
+def _build_request_url(origin_url: str) -> str:
+    """
+    Constructs a valid request URL to use with the Software Heritage API from its parts.
+
+    :param str origin_url: The URL for the origin source code repository that should be saved.
+    :return: A valid request URL
+    :rtype: str
+    """
+    return _prepare_url(_API_ROOT_URL + _API_ENDPOINT_SAVE + _visit_type + _API_URL_PATH + origin_url)
+
+
 def _check_rate_limit():
     """
     Pings the SWH API to receive a response with rate limit information in the header,
@@ -36,13 +47,14 @@ def _check_rate_limit():
     """
     response = requests.get('https://archive.softwareheritage.org/api/1/ping/')
     if response.status_code == 429:
-        _log.info('Rate limit exceeded. Backing off.')
+        _log.info('Too many requests! Backing off.')
         _back_off(response)
         return
 
     if int(response.headers['X-RateLimit-Remaining']) > 0:
         return
     else:
+        _log.info('Rate limit exceeded. Backing off.')
         _back_off(response)
 
 
@@ -57,7 +69,7 @@ def _request(method: _RequestMethod, origin_url: str, auth_token: str) -> reques
     :rtype: requests.Response
     """
     _check_rate_limit()
-    request_url = _prepare_url(origin_url)
+    request_url = _build_request_url(origin_url)
     headers = {'Accept': 'application/json'}
     if auth_token:
         _log.debug('Making authenticated requests (authorization token).')
@@ -99,7 +111,8 @@ def _check_save_progress(origin_url: str, auth_token: str, task_id: str):
     try:
         response = _request(_RequestMethod.GET, origin_url, auth_token)
     except request_exceptions.ConnectionError:
-        raise SwhSaveError('Could not connect to the Software Heritage API. Are you connected to the internet?')
+        raise SwhSaveError('Could not connect to the Software Heritage API during progress check. '
+                           'Are you connected to the internet?')
 
     response_json = response.json()
 
@@ -119,7 +132,7 @@ def _check_save_progress(origin_url: str, auth_token: str, task_id: str):
         _check_save_progress(origin_url, auth_token, task_id)
 
 
-def _get_current_result(response_json: t.Any, task_id: str):
+def _get_current_result(response_json: t.Any, task_id: str) -> t.Any:
     """
     Retrieves the current result from a list of save results that the SWH API returns when `get`ting the save action
     with the provided task id.
@@ -236,5 +249,5 @@ def save(origin_url: str, post_only: bool, auth_token: str):
             save(origin_url, False, auth_token)
         else:
             raise SwhSaveError(f'The status of the API response is unknown. '
-                               f'Please open a new issue reporting this at TODO. '
+                               f'Please open a new issue reporting this at https://github.com/sdruskat/pyswh/issues. '
                                f'Status code: {status}')
