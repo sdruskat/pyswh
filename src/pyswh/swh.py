@@ -111,7 +111,8 @@ def _check_save_progress(origin_url: str, auth_token: str, task_id: str):
     try:
         response = _request(_RequestMethod.GET, origin_url, auth_token)
     except request_exceptions.ConnectionError:
-        raise SwhSaveError('Could not connect to the Software Heritage API. Are you connected to the internet?')
+        raise SwhSaveError('Could not connect to the Software Heritage API during progress check. '
+                           'Are you connected to the internet?')
 
     response_json = response.json()
 

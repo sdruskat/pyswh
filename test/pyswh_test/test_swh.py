@@ -94,6 +94,31 @@ def test_init_save_pass():
 
 @responses.activate
 def test_init_save_raise():
-    with pytest.raises(swh.SwhSaveError) as e:
+    with pytest.raises(swh.SwhSaveError,
+                       match='Could not connect to the Software Heritage API. Are you connected to the internet?'):
         swh._init_save('MOCK', None)
-        assert 'Could not connect to the Software Heritage API. Are you connected to the internet?' in str(e.value)
+
+
+@responses.activate
+def test_check_save_progress():
+    with pytest.raises(swh.SwhSaveError,
+                       match='Could not connect to the Software Heritage API during progress check. '
+                             'Are you connected to the internet?'):
+        swh._check_save_progress('MOCK', None, '123')
+
+    # response_json = response.json()
+    #
+    # if type(response_json) == list:
+    #     response_json = _get_current_result(response_json, task_id)
+    #
+    # save_status = response_json['save_task_status']
+    # if save_status == 'failed':
+    #     raise SwhSaveError(f'Saving "{origin_url}" has failed with visit status "{response_json["visit_status"]}"!'
+    #                        f'\nFull response: {response.text}')
+    # elif save_status == 'succeeded':
+    #     _log.info(f'Saving {origin_url} has succeeded with visit status {response_json["visit_status"]}!')
+    # else:  # One of not created, not yet scheduled, scheduled
+    #     _log.info(f'The save task for {origin_url} is {save_status}. '
+    #               f'Waiting for 1 sec. before checking the status again.')
+    #     time.sleep(1)
+    #     _check_save_progress(origin_url, auth_token, task_id)
