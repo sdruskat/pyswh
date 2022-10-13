@@ -95,8 +95,8 @@ def test_init_save_pass():
     responses.get('https://archive.softwareheritage.org/api/1/ping/',
                   headers={'X-RateLimit-Remaining': str(1)})
     responses.post(MOCK_SAVE_URL,
-                  body='{"method": "POST"}', status=200,
-                  content_type='application/json')
+                   body='{"method": "POST"}', status=200,
+                   content_type='application/json')
     assert swh._init_save('MOCK', None).content == b'{"method": "POST"}'
 
 
@@ -154,6 +154,98 @@ def test_check_save_progress_wait(caplog):
                   status=200)
     with caplog.at_level(logging.DEBUG):
         swh._check_save_progress('MOCK', None, '123')
-    assert caplog.records[1].msg == f'The save task for MOCK is pending. ' \
-                                    f'Waiting for 1 sec. before checking the status again.'
+    assert caplog.records[1].msg == 'The save task for MOCK is pending. ' \
+                                    'Waiting for 1 sec. before checking the status again.'
     assert caplog.records[3].msg == 'Saving MOCK has succeeded with visit status full!'
+
+
+@responses.activate
+def test_save_post_only():
+    responses.get('https://archive.softwareheritage.org/api/1/ping/', headers={'X-RateLimit-Remaining': str(1)})
+    responses.post(MOCK_SAVE_URL,
+                   headers={'X-RateLimit-Remaining': str(1)},
+                   body='{"loading_task_id": "123", "save_task_status": "succeeded", "visit_status": "full"}',
+                   status=200)
+    swh.save('MOCK', True, None)
+
+
+@responses.activate
+def test_save_400():
+    responses.get('https://archive.softwareheritage.org/api/1/ping/', headers={'X-RateLimit-Remaining': str(1)})
+    responses.post(MOCK_SAVE_URL, status=400, body=b'NO_URL')
+    with pytest.raises(swh.SwhSaveError,
+                       match=f'An invalid visit type or origin url has been provided.\n'
+                             f'URL: MOCK\n{str(b"NO_URL")}'):
+        swh.save('MOCK', False, None)
+
+
+@responses.activate
+def test_save_403():
+    responses.get('https://archive.softwareheritage.org/api/1/ping/', headers={'X-RateLimit-Remaining': str(1)})
+    responses.post(MOCK_SAVE_URL, status=403, body=b'BLACKLISTED')
+    with pytest.raises(swh.SwhSaveError,
+                       match=f'The provided origin url is blacklisted.\nURL: MOCK\n{str(b"BLACKLISTED")}'):
+        swh.save('MOCK', False, None)
+
+
+@responses.activate
+def test_save_404():
+    responses.get('https://archive.softwareheritage.org/api/1/ping/', headers={'X-RateLimit-Remaining': str(1)})
+    responses.post(MOCK_SAVE_URL, status=404, body=b'NOT FOUND')
+    with pytest.raises(swh.SwhSaveError,
+                       match=f'No save requests have been found for a given origin.\nURL: MOCK\n{str(b"NOT FOUND")}'):
+        swh.save('MOCK', False, None)
+
+
+@responses.activate
+def test_save_429(caplog):
+    responses.get('https://archive.softwareheritage.org/api/1/ping/', headers={'X-RateLimit-Remaining': str(1)})
+    responses.post(MOCK_SAVE_URL,
+                   status=429,
+                   headers={'X-RateLimit-Reset': str(int(time.time()) + 1)})
+    responses.post(MOCK_SAVE_URL,
+                   headers={'X-RateLimit-Remaining': str(1)},
+                   body='{"loading_task_id": "123", "save_task_status": "succeeded", "visit_status": "full",'
+                        '"origin_url": "MOCK", "save_request_status": "accepted"}',
+                   status=200)
+    responses.get(MOCK_SAVE_URL,
+                  headers={'X-RateLimit-Remaining': str(1)},
+                  body='{"loading_task_id": "123", "save_task_status": "succeeded", "visit_status": "full",'
+                       '"origin_url": "MOCK", "save_request_status": "accepted"}',
+                  status=200)
+    with caplog.at_level(logging.DEBUG):
+        swh.save('MOCK', False, None)
+    assert caplog.records[1].msg == 'Rate limit exceeded. Waiting 3 seconds before retrying.'
+    assert caplog.records[4].msg == 'Saving MOCK has succeeded with visit status full!'
+
+
+@responses.activate
+def test_save_unknown_status(caplog):
+    responses.get('https://archive.softwareheritage.org/api/1/ping/', headers={'X-RateLimit-Remaining': str(1)})
+    responses.post(MOCK_SAVE_URL, status=410, body=b'GONE')
+    with pytest.raises(swh.SwhSaveError,
+                       match='The status of the API response is unknown. '
+                             'Please open a new issue reporting this at https://github.com/sdruskat/pyswh/issues. '
+                             'Status code: 410'):
+        swh.save('MOCK', False, None)
+
+
+@responses.activate
+def test_save_succeed(caplog):
+    responses.get('https://archive.softwareheritage.org/api/1/ping/', headers={'X-RateLimit-Remaining': str(1)})
+    responses.post(MOCK_SAVE_URL,
+                   headers={'X-RateLimit-Remaining': str(1)},
+                   body='{"loading_task_id": "123", "save_task_status": "pending", "visit_status": "full", '
+                        '"origin_url": "MOCK", "save_request_status": "pending"}',
+                   status=200)
+    responses.get(MOCK_SAVE_URL,
+                  headers={'X-RateLimit-Remaining': str(1)},
+                  body='[{"loading_task_id": "123", "save_task_status": "succeeded", "visit_status": "full",'
+                       '"origin_url": "MOCK", "save_request_status": "accepted"}]',
+                  status=200)
+    with caplog.at_level(logging.DEBUG):
+        swh.save('MOCK', False, None)
+    assert caplog.records[1].msg == 'The request to save MOCK is still pending. ' \
+                                    'Waiting for 1 sec. before checking the status again.'
+    assert caplog.records[4].msg == 'Saving MOCK has succeeded with visit status full!'
+    assert caplog.records[6].msg == 'Saving MOCK has succeeded with visit status full!'
