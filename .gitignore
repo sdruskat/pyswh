@@ -8,3 +8,4 @@ dist/
 __pycache__/
 docs/build/
 .coverage
+lint.sh
