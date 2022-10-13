@@ -1,2 +1,6 @@
+# SPDX-FileCopyrightText: 2022 Stephan Druskat <pyswh@sdruskat.net>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 [run]
 omit = test/*
