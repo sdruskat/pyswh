@@ -84,10 +84,12 @@ def test_request():
                   content_type='application/json')
     responses.post(MOCK_SAVE_URL,
                    body='{"method": "POST"}', status=200,
-                   content_type='application/json')
+                   content_type='application/json',
+                   headers={'Authorization': 'Bearer xyz'})
 
     assert swh._request(swh._RequestMethod.POST, 'MOCK', None).content == b'{"method": "POST"}'
     assert swh._request(swh._RequestMethod.GET, 'MOCK', None).content == b'{"method": "GET"}'
+    assert swh._request(swh._RequestMethod.POST, 'MOCK', 'xyz').headers['Authorization'] == 'Bearer xyz'
 
 
 @responses.activate
@@ -249,3 +251,16 @@ def test_save_succeed(caplog):
                                     'Waiting for 1 sec. before checking the status again.'
     assert caplog.records[4].msg == 'Saving MOCK has succeeded with visit status full!'
     assert caplog.records[6].msg == 'Saving MOCK has succeeded with visit status full!'
+
+
+@responses.activate
+def test_auth_token_header_log(caplog):
+    responses.get('https://archive.softwareheritage.org/api/1/ping/', headers={'X-RateLimit-Remaining': str(1)})
+    responses.post(MOCK_SAVE_URL,
+                   headers={'X-RateLimit-Remaining': str(1)},
+                   body='{"loading_task_id": "123", "save_task_status": "pending", "visit_status": "full", '
+                        '"origin_url": "MOCK", "save_request_status": "pending"}',
+                   status=200)
+    with caplog.at_level(logging.DEBUG):
+        swh.save('MOCK', True, 'xyz')
+    assert caplog.records[0].msg == 'Making authenticated requests (authorization token).'
