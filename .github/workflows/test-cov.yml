@@ -9,9 +9,9 @@ on:
     types: [ opened, synchronize, reopened ]
 
 jobs:
-  build:
+  codecov:
     runs-on: ubuntu-latest
-    name: Codecovg
+    name: Codecov
     steps:
       - uses: actions/checkout@v1
         with:
