@@ -89,7 +89,8 @@ def test_init_save_pass():
     responses.add(responses.POST, MOCK_SAVE_URL,
                   body='{"method": "POST"}', status=200,
                   content_type='application/json')
-    assert swh._init_save('MOCK', None).content ==  b'{"method": "POST"}'
+    assert swh._init_save('MOCK', None).content == b'{"method": "POST"}'
+
 
 @responses.activate
 def test_init_save_raise():
