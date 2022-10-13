@@ -47,7 +47,7 @@ def _check_rate_limit():
     """
     response = requests.get('https://archive.softwareheritage.org/api/1/ping/')
     if response.status_code == 429:
-        _log.info('Rate limit exceeded. Backing off.')
+        _log.info('Too many requests! Backing off.')
         _back_off(response)
         return
 
