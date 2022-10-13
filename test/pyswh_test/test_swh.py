@@ -264,3 +264,42 @@ def test_auth_token_header_log(caplog):
     with caplog.at_level(logging.DEBUG):
         swh.save('MOCK', True, 'xyz')
     assert caplog.records[0].msg == 'Making authenticated requests (authorization token).'
+
+
+@responses.activate
+def test_get_current_result_pass():
+    responses.get(MOCK_SAVE_URL,
+                  headers={'X-RateLimit-Remaining': str(1)},
+                  body='[{"loading_task_id": "123", "msg": "HIT"},'
+                       '{"loading_task_id": "122", "msg": "MISS"}]',
+                  status=200)
+    response_json = requests.get(MOCK_SAVE_URL).json()
+    assert swh._get_current_result(response_json, '123')['msg'] == 'HIT'
+
+
+@responses.activate
+def test_get_current_result_raise():
+    responses.get(MOCK_SAVE_URL,
+                  headers={'X-RateLimit-Remaining': str(1)},
+                  body='[{"loading_task_id": "123", "msg": "HIT", "origin_url": "MOCK"},'
+                       '{"loading_task_id": "122", "msg": "MISS", "origin_url": "MOCK"}]',
+                  status=200)
+    response_json = requests.get(MOCK_SAVE_URL).json()
+    with pytest.raises(swh.SwhSaveError,
+                       match='Failed to retrieve the save task for MOCK.\n'
+                             r'Full response: \[\{.+\}\]'):
+        swh._get_current_result(response_json, '124')
+
+
+@responses.activate
+def test_check_status_rejected():
+    responses.get(MOCK_SAVE_URL,
+                  headers={'X-RateLimit-Remaining': str(1)},
+                  body='{"loading_task_id": "123", "save_task_status": "succeeded", "visit_status": "full",'
+                       '"origin_url": "MOCK", "save_request_status": "rejected", "note": "MISS"}',
+                  status=200)
+    response = requests.get(MOCK_SAVE_URL)
+    with pytest.raises(swh.SwhSaveError,
+                       match='The request to save MOCK has been rejected:\nNotes: MISS\n'
+                             r'Full response: b.*'):
+        swh._check_status(response, None, '123')
