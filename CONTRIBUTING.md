@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022 Stephan Druskat <pyswh@sdruskat.net>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Contributing
 
 When contributing to this repository, please first discuss the change you wish to make 

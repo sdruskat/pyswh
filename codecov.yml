@@ -2,10 +2,9 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
-.idea/
-.venv/
-dist/
-__pycache__/
-docs/build/
-.coverage
-lint.sh
+coverage:
+  status:
+    project:
+      default:
+        target: 85%
+        threshold: 1%

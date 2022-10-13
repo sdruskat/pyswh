@@ -1,0 +1,38 @@
+' SPDX-FileCopyrightText: 2022 Stephan Druskat <pyswh@sdruskat.net>
+'
+' SPDX-License-Identifier: CC0-1.0
+
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: pyswh
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Stephan
+    family-names: Druskat
+    email: pyswh@sdruskat.net
+    affiliation: German Aerospace Center (DLR)
+    orcid: 'https://orcid.org/0000-0003-4925-7248'
+repository-code: 'https://github.com/sdruskat/pyswh'
+url: 'https://pyswh.readthedocs.io'
+repository-artifact: 'https://pypi.org/project/pyswh/'
+abstract: >-
+  pyswh aims to wrap interactions with the Software
+  Heritage REST API into a comfortable Python API.
+keywords:
+  - Software Heritage
+  - archive
+  - API
+  - Python
+  - wrapper
+  - library
+license: 
+  - MIT
+  - CC-BY-4.0
+  - CC0-1.,0
+version: 0.1.0
+date-released: '2022-10-13'

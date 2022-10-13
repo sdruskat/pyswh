@@ -2,9 +2,16 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
-name: Python package
+name: Lint and test
 
-on: [push]
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
 
 jobs:
   build:
@@ -22,16 +29,15 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install flake8 pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          curl -sSL https://install.python-poetry.org | python -
+          poetry install --with dev
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
-          flake8 ./test/ ./src/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          poetry run flake8 ./test/ ./src/ --count --select=E9,F63,F7,F82 --show-source --statistics
           # Stop build on errors
-          flake8 ./test/ ./src/ --count --max-complexity=10 --max-line-length=120 --statistics
+          poetry run flake8 ./test/ ./src/ --count --max-complexity=10 --max-line-length=120 --statistics
       - name: Test with pytest
         run: |
           pip install -e .
-          pytest ./test/
+          poetry run pytest ./test/
