@@ -132,7 +132,7 @@ def _check_save_progress(origin_url: str, auth_token: str, task_id: str):
         _check_save_progress(origin_url, auth_token, task_id)
 
 
-def _get_current_result(response_json: t.Any, task_id: str):
+def _get_current_result(response_json: t.Any, task_id: str) -> t.Any:
     """
     Retrieves the current result from a list of save results that the SWH API returns when `get`ting the save action
     with the provided task id.
