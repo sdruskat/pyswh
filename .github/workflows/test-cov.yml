@@ -1,9 +1,9 @@
 name: Code coverage
 
 push:
-    branches:
-      - develop
-      - main
+  branches:
+    - develop
+    - main
   pull_request:
     types: [ opened, synchronize, reopened ]
 
